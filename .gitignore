@@ -1,0 +1,47 @@
+# ---- Data: never commit participant-level or controlled-tier material ----
+data/
+# Data file types, wherever they appear in the tree
+*.csv
+*.tsv
+*.txt.gz
+*.vcf
+*.vcf.gz
+*.bcf
+*.bed
+*.bim
+*.fam
+*.pgen
+*.psam
+*.pvar
+*.bgen
+*.sample
+*.parquet
+*.feather
+*.h5
+*.hdf5
+
+# Re-allow non-sensitive codebook dictionaries (these ARE the deliverable)
+!codebook/**
+!codebook/*.csv
+
+# ---- Secrets / credentials ----
+*.pem
+*.key
+.env
+.env.*
+*_credentials.json
+service_account*.json
+
+# ---- Notebook + Python cruft ----
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/.venv/
+.DS_Store
+
+# ---- Analysis outputs (keep code, not generated artifacts) ----
+analysis/**/*.html
+analysis/**/*.pdf
+manuscript/**/*.pdf

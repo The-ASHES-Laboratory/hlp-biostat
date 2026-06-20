@@ -1,0 +1,21 @@
+# Conda environment for local + Hazel work.
+# Create with: conda env create -f env/environment.yml
+name: hlp-biostat
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+  - pandas
+  - numpy
+  - scipy
+  - statsmodels
+  - matplotlib
+  - seaborn
+  - jupyterlab
+  - plink2
+  - pre-commit
+  - nbstripout
+  - pip
+  - pip:
+      - polars

@@ -1,0 +1,14 @@
+# Strips notebook outputs before commit so participant data and bloat never land in git.
+# Setup: pip install pre-commit nbstripout && pre-commit install
+repos:
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.7.1
+    hooks:
+      - id: nbstripout
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=5000"]
+      - id: end-of-file-fixer
+      - id: trailing-whitespace

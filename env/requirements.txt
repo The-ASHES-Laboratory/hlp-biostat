@@ -1,0 +1,7 @@
+# Pip requirements for the AoU Researcher Workbench (cloud).
+# The workbench already provides Python, pandas, numpy, gsutil, BigQuery client, etc.
+# Add only what the cloud image lacks. Install with: pip install -r env/requirements.txt
+statsmodels
+seaborn
+nbstripout
+pre-commit
