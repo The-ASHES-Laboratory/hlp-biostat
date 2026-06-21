@@ -21,7 +21,8 @@ One-way, irreversible mirror. Do it carefully.
 - [ ] Verify all artifacts present in 2.0; confirm nothing was lost
 
 ## Milestone 2: Codebook
-- [ ] Define the 6 phenotypes in `codebook/phenotypes/` (OMOP concept sets + survey/EHR logic)
+- [~] Define the 6 phenotypes in `codebook/phenotypes/` (OMOP concept sets + survey/EHR logic)
+  (AoU/EHR half filled from notebook; pending: 3 design decisions + Hillsborough survey logic)
 - [ ] Map AoU survey variables and lifestyle variables to plain meanings
 - [ ] Implement `src/hlp/phenotypes.py` to build cases/controls from the definitions
 
