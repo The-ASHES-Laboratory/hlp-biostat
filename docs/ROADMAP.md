@@ -22,8 +22,9 @@ One-way, irreversible mirror. Do it carefully.
 
 ## Milestone 2: Codebook
 - [~] Define the 6 phenotypes in `codebook/phenotypes/` (OMOP concept sets + survey/EHR logic)
-  (AoU/EHR half locked: concept sets, case rule, sex restriction. Pending: Hillsborough survey
-  logic + resolving duplicate concept IDs 4112853 / 4108832)
+  (AoU/EHR half locked: concept sets, case rule, sex restriction; duplicate concept IDs resolved
+  via Athena lookup. `aou/HLP_project.ipynb` now loads definitions from the codebook via hlp
+  instead of inline. Pending: Hillsborough survey logic)
 - [ ] Map AoU survey variables and lifestyle variables to plain meanings
 - [x] Implement `src/hlp/phenotypes.py` to build cases/controls from the definitions
   (pure-Python core + pandas wrappers; reads condition_concepts.csv + phenotype_params.csv;

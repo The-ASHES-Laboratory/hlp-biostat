@@ -25,8 +25,6 @@ concept set in `codebook/condition_concepts.csv`, case rule in `codebook/phenoty
 
 ## Notes
 - Comparison groups: African American (`race_concept_id` 8516) vs European American (8527).
-- Concept `4112853` is ALSO listed under prostate_cancer in `condition_concepts.csv`. One OMOP
-  concept cannot be both, so this set likely contains a wrong ID. **Resolve before running
-  associations** (verify `4112853` in OMOP/Athena; it is probably a prostate concept mis-pasted
-  here, in which case it should be removed from this breast-cancer set).
+- Concept `4112853` is SNOMED 254837009 "Malignant tumor of breast" (standard), so it correctly
+  belongs here. It was removed from prostate_cancer on 2026-06-20 (resolved duplicate).
 - Ascertainment differs by cohort (EHR vs survey self-report).

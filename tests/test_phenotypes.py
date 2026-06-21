@@ -96,6 +96,47 @@ def test_load_definitions_from_codebook():
     assert 4163261 in defs["prostate_cancer"].concept_ids
 
 
+def test_build_label_matrix_wrapper():
+    """Pandas wrapper: sex exclusion + >=2-distinct-day rule + cancer >=1. Skips without pandas."""
+    try:
+        import pandas as pd
+    except ImportError:
+        print("SKIP test_build_label_matrix_wrapper (pandas not installed)")
+        return
+
+    from hlp.phenotypes import build_label_matrix
+
+    defs = load_definitions()
+    demographics = pd.DataFrame(
+        {"person_id": [1, 2, 3, 4, 5], "gender_concept_id": [8507, 8532, 8507, 8532, 8507]}
+    )
+    conditions = pd.DataFrame(
+        {
+            "person_id": [1, 1, 2, 2, 2, 3, 3, 3, 4, 4],
+            "condition_concept_id": [4163261, 316866, 4112853, 317009, 317009, 316866, 316866, 4112853, 4163261, 200970],
+            "condition_start_datetime": [
+                "2020-01-01", "2020-01-01", "2019-06-01", "2020-01-01", "2020-03-01",
+                "2018-01-01", "2018-09-01", "2019-01-01", "2021-01-01", "2021-02-01",
+            ],
+        }
+    )
+    m = build_label_matrix(conditions, demographics, defs, date_col="condition_start_datetime")
+
+    def val(pid, col):
+        v = m.loc[pid, col]
+        return None if pd.isna(v) else int(v)
+
+    assert val(1, "has_prostate_cancer") == 1
+    assert val(1, "has_hypertension") == 0          # one HTN day -> control (needs two)
+    assert val(2, "has_breast_cancer") == 1
+    assert val(2, "has_asthma") == 1                # two distinct days
+    assert val(3, "has_hypertension") == 1          # two distinct days
+    assert val(3, "has_breast_cancer") is None      # male excluded from breast
+    assert val(4, "has_prostate_cancer") is None    # female excluded from prostate
+    assert val(4, "has_colorectal_cancer") == 1
+    assert val(5, "has_asthma") == 0                # no conditions -> control
+
+
 if __name__ == "__main__":
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     failed = 0

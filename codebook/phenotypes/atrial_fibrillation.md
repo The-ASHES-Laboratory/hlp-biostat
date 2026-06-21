@@ -24,8 +24,11 @@ concept set in `codebook/condition_concepts.csv`, case rule in `codebook/phenoty
 
 ## Notes
 - Comparison groups: African American (`race_concept_id` 8516) vs European American (8527).
-- Concept `4108832` is also listed under hypertension in `condition_concepts.csv`; resolve during
-  Milestone 2 cleanup (see hypertension.md note).
+- Concept `4108832` is SNOMED 195080001 "Atrial fibrillation and flutter"; it correctly belongs
+  here and was removed from hypertension on 2026-06-20. Caveat: it is NON-standard
+  (STANDARD_CONCEPT=N), so it will not match `condition_concept_id`. The standard AF concept
+  313217 (already in this set) does the actual matching. Consider dropping 4108832 or mapping it
+  to its standard equivalent.
 - Atrial flutter vs fibrillation coding can vary; revisit the concept set if descendant expansion
   is enabled later.
 - Ascertainment differs by cohort (EHR vs survey self-report).

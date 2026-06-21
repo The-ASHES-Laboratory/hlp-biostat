@@ -6,7 +6,7 @@ Single source of truth for the Hypertension phenotype. Both the AoU (national) a
 concept set in `codebook/condition_concepts.csv`, case rule in `codebook/phenotype_params.csv`.
 
 ## OMOP condition concept set
-- Concept IDs: 316866, 4108832, 314754, 320128
+- Concept IDs: 316866, 314754, 320128
 - Matching: exact `condition_concept_id` match (locked). Descendant expansion not enabled.
 
 ## Case definition
@@ -24,9 +24,9 @@ concept set in `codebook/condition_concepts.csv`, case rule in `codebook/phenoty
 
 ## Notes
 - Comparison groups: African American (`race_concept_id` 8516) vs European American (8527).
-- Concept `4108832` is also listed under atrial_fibrillation in `condition_concepts.csv`. One OMOP
-  concept denotes one entity, so this is likely a copy-paste to resolve (it would double-count
-  those participants as both HTN and AF cases). Tracked for Milestone 2 cleanup.
+- Concept `4108832` (SNOMED 195080001 "Atrial fibrillation and flutter") was removed from this set
+  on 2026-06-20: it is a cardiac-arrhythmia concept that was mis-included here. It now lives only
+  in atrial_fibrillation.
 - Hypertension is high-prevalence; medication (drug_exposure) or BP measurements could supplement
   condition codes in future, not currently used.
 - Ascertainment differs by cohort (EHR vs survey self-report).

@@ -6,7 +6,7 @@ Single source of truth for the Prostate Cancer phenotype. Both the AoU (national
 concept set in `codebook/condition_concepts.csv`, case rule in `codebook/phenotype_params.csv`.
 
 ## OMOP condition concept set
-- Concept IDs: 4163261, 4112853, 4119298, 4119601
+- Concept IDs: 4163261, 4119298, 4119601
 - Matching: exact `condition_concept_id` match (locked). Descendant expansion not enabled.
 
 ## Case definition
@@ -24,9 +24,9 @@ concept set in `codebook/condition_concepts.csv`, case rule in `codebook/phenoty
 
 ## Notes
 - Comparison groups: African American (`race_concept_id` 8516) vs European American (8527).
-- Concept `4112853` is ALSO listed under breast_cancer in `condition_concepts.csv`. One OMOP
-  concept cannot be both prostate and breast cancer, so one is wrong. **Resolve before running
-  associations** (likely a copy-paste; verify the concept's true meaning in OMOP/Athena).
+- Concept `4112853` (SNOMED 254837009 "Malignant tumor of breast") was removed from this set on
+  2026-06-20: it is a breast-cancer concept that was mis-included here. It now lives only in
+  breast_cancer.
 - Prostate cancer in African American men has notably higher incidence and mortality, central to
   this study's disparities question; the sex restriction keeps controls at-risk.
 - Ascertainment differs by cohort (EHR vs survey self-report).

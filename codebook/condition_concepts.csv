@@ -10,11 +10,11 @@ concept_id,concept_name,vocabulary,disease_group,include_descendants,notes
 252658,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
 252946,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
 4163261,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
-4112853,TBD,TBD,prostate_cancer,TBD,DUPLICATE: also listed under breast_cancer in notebook; review which is correct
+4112853,Malignant tumor of breast,SNOMED,breast_cancer,TBD,"Resolved 2026-06-20: SNOMED 254837009, standard. Belongs to breast_cancer; removed from prostate_cancer (was mis-included)"
 4119298,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
 4119601,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
 316866,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
-4108832,TBD,TBD,hypertension,TBD,DUPLICATE: also listed under atrial_fibrillation in notebook; review which is correct
+4108832,Atrial fibrillation and flutter,SNOMED,atrial_fibrillation,TBD,"Resolved 2026-06-20: SNOMED 195080001, NON-standard (STANDARD_CONCEPT=N). Belongs to atrial_fibrillation not hypertension. Non-standard so it will not match condition_concept_id; standard AF 313217 already in set. Consider dropping or mapping"
 314754,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
 320128,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
 4155468,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
