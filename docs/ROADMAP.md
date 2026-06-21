@@ -22,9 +22,12 @@ One-way, irreversible mirror. Do it carefully.
 
 ## Milestone 2: Codebook
 - [~] Define the 6 phenotypes in `codebook/phenotypes/` (OMOP concept sets + survey/EHR logic)
-  (AoU/EHR half filled from notebook; pending: 3 design decisions + Hillsborough survey logic)
+  (AoU/EHR half locked: concept sets, case rule, sex restriction. Pending: Hillsborough survey
+  logic + resolving duplicate concept IDs 4112853 / 4108832)
 - [ ] Map AoU survey variables and lifestyle variables to plain meanings
-- [ ] Implement `src/hlp/phenotypes.py` to build cases/controls from the definitions
+- [x] Implement `src/hlp/phenotypes.py` to build cases/controls from the definitions
+  (pure-Python core + pandas wrappers; reads condition_concepts.csv + phenotype_params.csv;
+  7 unit tests passing. Pandas wrappers pending validation on real cohort data)
 
 ## Milestone 3: National cohort analysis (AoU)
 - [ ] Build national AA cohort + extract phenotypes in the cloud

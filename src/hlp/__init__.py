@@ -6,3 +6,19 @@ national cohorts comparable.
 """
 
 __version__ = "0.0.1"
+
+from hlp.phenotypes import (
+    PhenotypeDef,
+    build_label_matrix,
+    build_labels,
+    classify_person,
+    load_definitions,
+)
+
+__all__ = [
+    "PhenotypeDef",
+    "build_label_matrix",
+    "build_labels",
+    "classify_person",
+    "load_definitions",
+]

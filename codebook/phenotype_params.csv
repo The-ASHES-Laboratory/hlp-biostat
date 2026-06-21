@@ -1,0 +1,7 @@
+phenotype,min_occurrences,sex_restriction,include_descendants,notes
+asthma,2,,false,Chronic: rule-of-two (>=2 distinct-day codes) to cut EHR false positives
+hypertension,2,,false,Chronic: rule-of-two
+atrial_fibrillation,2,,false,Chronic: rule-of-two
+colorectal_cancer,1,,false,Cancer: single diagnosis code is reliable
+prostate_cancer,1,male,false,Cancer: >=1; male-only (gender_concept_id 8507) cases and controls
+breast_cancer,1,female,false,Cancer: >=1; female-only (gender_concept_id 8532) cases and controls
