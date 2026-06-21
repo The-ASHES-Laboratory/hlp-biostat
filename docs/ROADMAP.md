@@ -6,13 +6,14 @@ Lightweight by design: update statuses as work lands.
 Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 
 ## Milestone 0: Repository setup
-- [~] Directory scaffold, governance, README, private GitHub repo
-- [ ] Pre-commit notebook-output stripping verified working
+- [x] Directory scaffold, governance, README, private GitHub repo
+- [x] Pre-commit notebook-output stripping verified working
 
 ## Milestone 1: AoU Legacy -> Researcher Workbench 2.0 migration
 One-way, irreversible mirror. Do it carefully.
 - [x] Build migration runbook at `docs/migration-aou-2.0.md` from official AoU docs
-- [ ] Inventory legacy workspace (notebooks, buckets, datasets, config) before migrating
+- [~] Inventory legacy workspace (notebooks, buckets, datasets, config) before migrating
+  (local analysis done: `docs/migration-inventory.md`; in-cloud confirmations pending)
 - [ ] Execute migration following the runbook
 - [ ] Verify all artifacts present in 2.0; confirm nothing was lost
 
