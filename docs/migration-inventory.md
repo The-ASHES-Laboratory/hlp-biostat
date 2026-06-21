@@ -1,11 +1,39 @@
 # Pre-Migration Inventory: AoU national-cohort workspace
 
-*Derived from the local mirror `aou/HLP_project.ipynb` on 2026-06-20. Companion to
-`docs/migration-aou-2.0.md`. Complete the in-cloud checks before clicking "Start migration".*
+*Derived from the local mirror `aou/HLP_project.ipynb` on 2026-06-20, plus a read-only
+in-cloud pass (Carter, Reader role). Companion to `docs/migration-aou-2.0.md`. The Owner-only
+execution packet is `docs/migration-handoff-owner.md`.*
 
 This is the "inventory legacy workspace" step. It records what the local code reveals so the
-irreversible in-cloud steps are fast and safe. Items marked **[cloud]** can only be confirmed
-inside the legacy Workbench.
+irreversible in-cloud steps are fast and safe.
+
+## Confirmed workspace facts (in-cloud, read-only)
+
+| Field | Value |
+|-------|-------|
+| Workspace | Hillsborough Statistical Genetics Legacy Project (namespace aou-rw-1fda26b2) |
+| Bucket | gs://fc-secure-0a7bd839-5651-4908-8d88-7f466ef6fb94 |
+| Google project | terra-vpc-sc-3d95f7cd |
+| CDR version | v8 (eligible) |
+| Owner / Writer / Reader | jfrank@ / avicenti@ / cclinton@ |
+| Billing | Initial credits show "expiring Feb 17, 2026" (already past) -> needs a valid billing source + active RW 2.0 pod before migrating |
+
+**Role consequence:** Carter is a Reader. Migration, the writable terminal, and the
+persistent-disk copy are Owner-only (Jalen). See `docs/migration-handoff-owner.md`.
+
+## Point-and-click objects exist, but the notebook does not depend on them
+
+The workspace has three GUI-built objects (all by jfrank@) that do NOT migrate:
+- Cohort "Statistical Genetics Cohort"
+- Concept Set "Statistical Genetics Conditions of Interest"
+- Dataset "HLP_Dataset"
+
+Reconciliation against the notebook: `HLP_project.ipynb` contains the **materialized SQL** these
+objects generated (inline `cb_search_person`/`cb_search_all_events` subqueries, `concept_id IN
+(...)` lists; no `cohort_definition_id` reference). The notebook is self-contained and will run
+after migration without recreating the GUI objects. The concept-set logic is captured in
+`codebook/condition_concepts.csv`. Recreating the GUI objects in 2.0 is optional (only for future
+Data Explorer editing). **This de-risks the migration substantially.**
 
 ## CRITICAL: persistent-disk outputs are not migrated
 
@@ -67,14 +95,18 @@ genomic pull consistent.
 - No `pip install` / `conda install` in the notebook: no custom packages to reinstall.
 - Cohort/Dataset queries are code-based (in the notebook, in the bucket), so they migrate.
 
-## [cloud] Still to confirm inside the legacy Workbench
+## [cloud] Status of in-cloud confirmations
 
-- [ ] No point-and-click Cohorts / Datasets / Concept Sets exist that are NOT also expressed in code.
-      If any do, record their inclusion/exclusion + concept logic into `codebook/` (they do not migrate).
-- [ ] `HLP_project.ipynb` in the workspace bucket matches this repo's copy (the canonical source).
-- [ ] No other notebooks/scripts live only on the persistent disk.
-- [ ] Eligibility + access (runbook Step 1): RCR current, Verily ToS accepted, billing pod active,
-      you are Owner/Creator.
+- [x] Point-and-click objects identified (Cohort, Concept Set, Dataset). Confirmed the notebook
+      does not depend on them; concept-set logic captured in `codebook/condition_concepts.csv`.
+- [x] CDR version confirmed v8.
+- [x] Access requirements current (RCR, Controlled Tier, DUCC all completed Oct 1, 2025).
+- [~] Billing: credits appear expired (Feb 17, 2026). Needs valid billing source + active RW 2.0
+      pod confirmed by Owner. **Gate 1 in the Owner packet.**
+- [ ] [Owner] `HLP_project.ipynb` and any other scripts confirmed in the BUCKET (not only on PD).
+- [ ] [Owner] Persistent-disk `merged_df` size checked; copied to bucket or chosen to discard.
+- [ ] [Owner] Verily Terms of Service accepted in RW 2.0.
+- [ ] [Owner] Confirm this is the only AoU workspace needing migration.
 
 ## Codebook capture note
 

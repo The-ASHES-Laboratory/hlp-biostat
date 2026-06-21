@@ -1,1 +1,26 @@
 concept_id,concept_name,vocabulary,disease_group,include_descendants,notes
+317009,TBD,TBD,asthma,TBD,From notebook CONDITION_CONCEPTS; fill name/vocab from OMOP/Athena
+4051466,TBD,TBD,asthma,TBD,From notebook CONDITION_CONCEPTS
+257581,TBD,TBD,asthma,TBD,From notebook CONDITION_CONCEPTS
+256448,TBD,TBD,asthma,TBD,From notebook CONDITION_CONCEPTS
+200970,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
+4180790,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
+4180791,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
+4180792,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
+252658,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
+252946,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
+4163261,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
+4112853,TBD,TBD,prostate_cancer,TBD,DUPLICATE: also listed under breast_cancer in notebook; review which is correct
+4119298,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
+4119601,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
+316866,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
+4108832,TBD,TBD,hypertension,TBD,DUPLICATE: also listed under atrial_fibrillation in notebook; review which is correct
+314754,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
+320128,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
+4155468,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
+4155469,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
+4157332,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
+4245676,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
+313217,TBD,TBD,atrial_fibrillation,TBD,From notebook CONDITION_CONCEPTS
+313236,TBD,TBD,atrial_fibrillation,TBD,From notebook CONDITION_CONCEPTS
+312950,TBD,TBD,atrial_fibrillation,TBD,From notebook CONDITION_CONCEPTS

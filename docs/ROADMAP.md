@@ -12,9 +12,12 @@ Status key: `[ ]` not started, `[~]` in progress, `[x]` done.
 ## Milestone 1: AoU Legacy -> Researcher Workbench 2.0 migration
 One-way, irreversible mirror. Do it carefully.
 - [x] Build migration runbook at `docs/migration-aou-2.0.md` from official AoU docs
-- [~] Inventory legacy workspace (notebooks, buckets, datasets, config) before migrating
-  (local analysis done: `docs/migration-inventory.md`; in-cloud confirmations pending)
+- [x] Inventory legacy workspace (notebooks, buckets, datasets, config) before migrating
+  (`docs/migration-inventory.md`; in-cloud read-only pass done. Notebook is self-contained;
+  point-and-click objects do not block migration)
 - [ ] Execute migration following the runbook
+  (Owner-only; green-light packet ready at `docs/migration-handoff-owner.md`. Hand to jfrank@.
+  Gates: billing pod + persistent-disk `merged_df` rescue)
 - [ ] Verify all artifacts present in 2.0; confirm nothing was lost
 
 ## Milestone 2: Codebook
