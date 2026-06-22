@@ -27,10 +27,14 @@ One-way, irreversible mirror. Do it carefully.
 
 ## Milestone 2: Codebook
 - [~] Define the 6 phenotypes in `codebook/phenotypes/` (OMOP concept sets + survey/EHR logic)
-  (AoU/EHR half locked: concept sets, case rule, sex restriction; duplicate concept IDs resolved
-  via Athena lookup. `aou/HLP_project.ipynb` now loads definitions from the codebook via hlp
-  instead of inline. Pending: Hillsborough survey logic)
-- [ ] Map AoU survey variables and lifestyle variables to plain meanings
+  (Case rule, sex restriction, and BOTH cohort halves now written. AoU notebook loads defs from
+  the codebook via hlp. **BLOCKER: AoU concept sets were badly contaminated** - audit removed 11
+  wrong IDs (mostly asthma misfiled under cancers/AF); cancer/AF/HTN sets are now thin and need a
+  proper REBUILD before Milestone 3. Hillsborough: hypertension direct, asthma over-broad, cancers
+  need free-text parse, AF not ascertainable from the survey.)
+- [x] Map AoU survey variables and lifestyle variables to plain meanings
+  (`survey_variables.csv` + `lifestyle_variables.csv` from the Hillsborough Health Survey codebook;
+  metadata only, no PII. AoU side uses dynamic CDR queries, not a static variable list.)
 - [x] Implement `src/hlp/phenotypes.py` to build cases/controls from the definitions
   (pure-Python core + pandas wrappers; reads condition_concepts.csv + phenotype_params.csv;
   7 unit tests passing. Pandas wrappers pending validation on real cohort data)
