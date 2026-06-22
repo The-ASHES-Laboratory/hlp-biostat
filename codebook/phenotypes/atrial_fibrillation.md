@@ -5,30 +5,33 @@ Single source of truth for the Atrial Fibrillation phenotype. Both the AoU (nati
 `src/hlp/phenotypes.py`. Do not redefine it inside a notebook. Machine-readable encoding:
 concept set in `codebook/condition_concepts.csv`, case rule in `codebook/phenotype_params.csv`.
 
-## OMOP condition concept set
-- Concept IDs: 313217, 313236, 312950, 4108832
+## OMOP condition concept set (AoU)
+- Concept IDs: 313217 (Atrial fibrillation, standard); 4108832 (Atrial fibrillation and flutter,
+  NON-standard - will not match `condition_concept_id`; 313217 does the real matching)
 - Matching: exact `condition_concept_id` match (locked). Descendant expansion not enabled.
+- **2026-06-22 QC:** removed `313236` ("Cough variant asthma") and `312950` ("IgE-mediated
+  allergic asthma") - both contamination, neither an arrhythmia.
+- **Effective set is one standard concept** (313217). Consider descendants / a curated AF set
+  before running associations.
 
 ## Case definition
 - AoU (national): >= 2 `condition_occurrence` records on **distinct days** with a concept in the
   set above (rule-of-two for chronic conditions).
-- Hillsborough: TBD pending the health-survey instrument (map in `codebook/survey_variables.csv`).
+- Hillsborough: **NOT reliably ascertainable.** The survey has no AF-specific item; the closest is
+  `diagnosed_cardiovascularcondition` ("heart disease or any cardiovascular condition"), which is
+  any-CVD, not AF. Options: (a) treat Hillsborough AF as undefined and drop it from the
+  cross-cohort comparison, or (b) use any-CVD as an explicitly-labeled broad proxy. Default: drop,
+  to avoid a misleading comparison.
 
 ## Control definition
 - AoU: cohort members not meeting the case rule. Cohort = `race_concept_id` in {8516, 8527} with
   genomic + EHR data.
-- Hillsborough: TBD (survey: no self-reported atrial fibrillation / irregular heartbeat).
+- Hillsborough: undefined (see Case definition).
 
 ## Exclusions
 - None specific. No sex restriction.
 
 ## Notes
 - Comparison groups: African American (`race_concept_id` 8516) vs European American (8527).
-- Concept `4108832` is SNOMED 195080001 "Atrial fibrillation and flutter"; it correctly belongs
-  here and was removed from hypertension on 2026-06-20. Caveat: it is NON-standard
-  (STANDARD_CONCEPT=N), so it will not match `condition_concept_id`. The standard AF concept
-  313217 (already in this set) does the actual matching. Consider dropping 4108832 or mapping it
-  to its standard equivalent.
-- Atrial flutter vs fibrillation coding can vary; revisit the concept set if descendant expansion
-  is enabled later.
-- Ascertainment differs by cohort (EHR vs survey self-report).
+- **This is the weakest cross-cohort phenotype:** AF is well-defined in AoU (EHR) but not captured
+  by the Hillsborough survey. Flag prominently in any cohort comparison.

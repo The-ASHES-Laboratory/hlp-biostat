@@ -5,28 +5,27 @@ Single source of truth for the Hypertension phenotype. Both the AoU (national) a
 `src/hlp/phenotypes.py`. Do not redefine it inside a notebook. Machine-readable encoding:
 concept set in `codebook/condition_concepts.csv`, case rule in `codebook/phenotype_params.csv`.
 
-## OMOP condition concept set
-- Concept IDs: 316866, 314754, 320128
+## OMOP condition concept set (AoU)
+- Concept IDs: 316866 (Hypertensive disorder), 320128 (Essential hypertension)
 - Matching: exact `condition_concept_id` match (locked). Descendant expansion not enabled.
+- 2026-06-22 QC: removed `314754` ("Wheezing", a respiratory finding) - it was contamination,
+  not a hypertension concept. Set verified against OHDSI Atlas.
 
 ## Case definition
 - AoU (national): >= 2 `condition_occurrence` records on **distinct days** with a concept in the
   set above (rule-of-two for chronic conditions).
-- Hillsborough: TBD pending the health-survey instrument (map in `codebook/survey_variables.csv`).
+- Hillsborough: `diagnosed_highbloodpressure` == Yes -> case; == No -> control;
+  Unsure / Prefer-not-to-answer -> missing. **Direct self-report match** (best of the six).
 
 ## Control definition
 - AoU: cohort members not meeting the case rule. Cohort = `race_concept_id` in {8516, 8527} with
   genomic + EHR data.
-- Hillsborough: TBD (survey: no self-reported high blood pressure).
+- Hillsborough: `diagnosed_highbloodpressure` == No.
 
 ## Exclusions
 - None specific. No sex restriction.
 
 ## Notes
 - Comparison groups: African American (`race_concept_id` 8516) vs European American (8527).
-- Concept `4108832` (SNOMED 195080001 "Atrial fibrillation and flutter") was removed from this set
-  on 2026-06-20: it is a cardiac-arrhythmia concept that was mis-included here. It now lives only
-  in atrial_fibrillation.
-- Hypertension is high-prevalence; medication (drug_exposure) or BP measurements could supplement
-  condition codes in future, not currently used.
-- Ascertainment differs by cohort (EHR vs survey self-report).
+- Ascertainment differs by cohort: EHR codes (AoU) vs single self-report item (Hillsborough).
+  This is the one phenotype where the two cohorts align cleanly.

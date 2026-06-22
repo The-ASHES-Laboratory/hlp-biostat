@@ -1,1 +1,11 @@
 variable_id,source,domain,plain_meaning,coding,notes
+smoking_tobaccoform,Hillsborough Health Survey,smoking,Current tobacco/smoking use and form,Cigarettes | OtherSmokingTobacco | ChewingTobacco | NoTobacco | Quit | Prefer not to answer,Checkbox (multi-select). Derive ever/never/current/former smoker
+alcohol_drinkingfrequency,Hillsborough Health Survey,alcohol,Alcohol consumption frequency,Never | Rarely | Occasionally | Regularly | Daily | Prefer not to answer,Ordinal
+physicalactivity_exercisefrequency,Hillsborough Health Survey,physical_activity,Engages in exercise/physical activity,Yes | No | Prefer not to answer,Gates exercisefrequency_daysperweek and exercisetype
+exercisefrequency_daysperweek,Hillsborough Health Survey,physical_activity,Days per week of exercise,1to2Days | 3to4Days | 5to7Days,Only asked if exercises (branching)
+physicalactivity_exercisetype,Hillsborough Health Survey,physical_activity,Type of physical activity,WalkorJog | Weights | Stretching | CycleorSwim | Other | Prefer not to answer,Checkbox (multi-select)
+sleep_hourspernight,Hillsborough Health Survey,sleep,Average hours of sleep per night,Less4 | 4to6 | 6to8 | More8 | Prefer not to answer,Ordinal
+living_location,Hillsborough Health Survey,environment,Urban / suburban / rural residence,Urban | Suburban | Rural | Prefer not to answer,
+exposure_environmentalfactors,Hillsborough Health Survey,environment,Environmental exposures,AirPollution | WaterMetals | Pesticides | Mold | None | Prefer not to answer,Checkbox (multi-select)
+health_specificdiet,Hillsborough Health Survey,diet,Follows a specific diet,No | Vegan | Vegetarian | HighFiber | Pescatarian | GlutenFree | Other | Prefer not to answer,Checkbox (multi-select); microbiome_health section
+regular_fermentedfoods,Hillsborough Health Survey,diet,Regular fermented foods / probiotic intake,Yes regularly | Occasionally | No | Prefer not to answer,microbiome_health section

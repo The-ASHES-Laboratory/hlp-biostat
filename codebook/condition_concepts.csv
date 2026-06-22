@@ -1,26 +1,15 @@
 concept_id,concept_name,vocabulary,disease_group,include_descendants,notes
-317009,TBD,TBD,asthma,TBD,From notebook CONDITION_CONCEPTS; fill name/vocab from OMOP/Athena
-4051466,TBD,TBD,asthma,TBD,From notebook CONDITION_CONCEPTS
-257581,TBD,TBD,asthma,TBD,From notebook CONDITION_CONCEPTS
-256448,TBD,TBD,asthma,TBD,From notebook CONDITION_CONCEPTS
-200970,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
-4180790,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
-4180791,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
-4180792,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
-252658,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
-252946,TBD,TBD,colorectal_cancer,TBD,From notebook CONDITION_CONCEPTS
-4163261,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
-4112853,Malignant tumor of breast,SNOMED,breast_cancer,TBD,"Resolved 2026-06-20: SNOMED 254837009, standard. Belongs to breast_cancer; removed from prostate_cancer (was mis-included)"
-4119298,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
-4119601,TBD,TBD,prostate_cancer,TBD,From notebook CONDITION_CONCEPTS
-316866,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
-4108832,Atrial fibrillation and flutter,SNOMED,atrial_fibrillation,TBD,"Resolved 2026-06-20: SNOMED 195080001, NON-standard (STANDARD_CONCEPT=N). Belongs to atrial_fibrillation not hypertension. Non-standard so it will not match condition_concept_id; standard AF 313217 already in set. Consider dropping or mapping"
-314754,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
-320128,TBD,TBD,hypertension,TBD,From notebook CONDITION_CONCEPTS
-4155468,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
-4155469,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
-4157332,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
-4245676,TBD,TBD,breast_cancer,TBD,From notebook CONDITION_CONCEPTS
-313217,TBD,TBD,atrial_fibrillation,TBD,From notebook CONDITION_CONCEPTS
-313236,TBD,TBD,atrial_fibrillation,TBD,From notebook CONDITION_CONCEPTS
-312950,TBD,TBD,atrial_fibrillation,TBD,From notebook CONDITION_CONCEPTS
+317009,Asthma,SNOMED,asthma,no,Standard (verified OHDSI Atlas 2026-06-22)
+4051466,Childhood asthma,SNOMED,asthma,no,Standard
+257581,Acute asthma,SNOMED,asthma,no,Standard
+256448,Chronic asthmatic bronchitis,SNOMED,asthma,no,Standard
+4180790,Malignant tumor of colon,SNOMED,colorectal_cancer,no,Standard. Set is thin (3 concepts) after removing contamination; expand before use
+4180791,Malignant tumor of hepatic flexure,SNOMED,colorectal_cancer,no,Standard
+4180792,Malignant tumor of rectosigmoid junction,SNOMED,colorectal_cancer,no,Standard
+4163261,Malignant tumor of prostate,SNOMED,prostate_cancer,no,Standard. ONLY concept left after contamination removal; needs descendants/rebuild
+316866,Hypertensive disorder,SNOMED,hypertension,no,Standard
+320128,Essential hypertension,SNOMED,hypertension,no,Standard
+4112853,Malignant tumor of breast,SNOMED,breast_cancer,no,Standard
+4157332,Malignant neoplasm of female breast,SNOMED,breast_cancer,no,NON-standard (STANDARD_CONCEPT=N); will not match condition_concept_id - map to standard before use
+313217,Atrial fibrillation,SNOMED,atrial_fibrillation,no,Standard
+4108832,Atrial fibrillation and flutter,SNOMED,atrial_fibrillation,no,NON-standard (STANDARD_CONCEPT=N); will not match condition_concept_id - standard AF 313217 covers it
