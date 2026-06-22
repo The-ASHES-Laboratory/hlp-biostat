@@ -16,8 +16,11 @@ One-way, irreversible mirror. Do it carefully.
   (`docs/migration-inventory.md`; in-cloud read-only pass done. Notebook is self-contained;
   point-and-click objects do not block migration)
 - [~] Execute migration following the runbook
-  (Initiated 2026-06-22 by Carter, now co-owner. Billing pod `user-pod-cclinton-2d12`. Decided to
-  re-run fresh in 2.0 rather than rescue the stale persistent-disk `merged_df`. Transfer underway.)
+  (2026-06-22: Carter's attempts failed - button reverts to "Retry" / hangs on "STARTING", never
+  surfaces in 2.0 after 30+ min. Diagnosed as owner-role propagation lag: Carter was promoted to
+  owner the same day, and the platform warns billing-pod/permission changes take 12-24h. Pivoting
+  to Jalen (original Creator, no lag) to initiate; or Carter retries after 12-24h. Decided to
+  re-run fresh in 2.0 rather than rescue the stale persistent-disk `merged_df`.)
 - [ ] Verify all artifacts present in 2.0; confirm nothing was lost
   (Run the Validate check ~30 min post-start; capture RW 2.0 WORKSPACE_CDR / CDR_STORAGE_PATH.
   Do NOT delete the legacy workspace until 2.0 is validated and the analysis re-runs cleanly.)
