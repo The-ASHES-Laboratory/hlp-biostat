@@ -30,8 +30,9 @@ One-way, irreversible mirror. Do it carefully.
   (Case rule, sex restriction, and BOTH cohort halves now written. AoU notebook loads defs from
   the codebook via hlp. **BLOCKER: AoU concept sets were badly contaminated** - audit removed 11
   wrong IDs (mostly asthma misfiled under cancers/AF); cancer/AF/HTN sets are now thin and need a
-  proper REBUILD before Milestone 3. Hillsborough: hypertension direct, asthma over-broad, cancers
-  need free-text parse, AF not ascertainable from the survey.)
+  proper REBUILD before Milestone 3 - plan at `docs/concept-set-rebuild-plan.md` (do it in the AoU
+  2.0 concept-set builder post-migration). Hillsborough: hypertension direct, asthma over-broad,
+  cancers need free-text parse, AF not ascertainable from the survey.)
 - [x] Map AoU survey variables and lifestyle variables to plain meanings
   (`survey_variables.csv` + `lifestyle_variables.csv` from the Hillsborough Health Survey codebook;
   metadata only, no PII. AoU side uses dynamic CDR queries, not a static variable list.)
@@ -50,6 +51,8 @@ One-way, irreversible mirror. Do it carefully.
 - [ ] Association / risk analysis
 
 ## Milestone 5: Cohort comparison
-- [ ] Compare Hillsborough vs national AA risk/prevalence for the 6 conditions
+- [~] Compare Hillsborough vs national AA risk/prevalence for the 6 conditions
+  (Comparison engine implemented: `src/hlp/compare.py` - prevalence + Fisher's exact between two
+  groups, AA-vs-EA or Hillsborough-vs-national. Awaits real labeled cohorts to run.)
 - [ ] Integrate lifestyle factors
 - [ ] Figures + manuscript draft

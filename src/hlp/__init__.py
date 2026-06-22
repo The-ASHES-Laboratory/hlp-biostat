@@ -14,6 +14,13 @@ from hlp.phenotypes import (
     classify_person,
     load_definitions,
 )
+from hlp.compare import (
+    Prevalence,
+    compare_groups,
+    prevalence,
+    prevalence_by_group,
+    two_by_two,
+)
 
 __all__ = [
     "PhenotypeDef",
@@ -21,4 +28,9 @@ __all__ = [
     "build_labels",
     "classify_person",
     "load_definitions",
+    "Prevalence",
+    "compare_groups",
+    "prevalence",
+    "prevalence_by_group",
+    "two_by_two",
 ]
