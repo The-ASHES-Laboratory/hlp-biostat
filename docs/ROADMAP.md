@@ -15,10 +15,12 @@ One-way, irreversible mirror. Do it carefully.
 - [x] Inventory legacy workspace (notebooks, buckets, datasets, config) before migrating
   (`docs/migration-inventory.md`; in-cloud read-only pass done. Notebook is self-contained;
   point-and-click objects do not block migration)
-- [ ] Execute migration following the runbook
-  (Owner-only; green-light packet ready at `docs/migration-handoff-owner.md`. Hand to jfrank@.
-  Gates: billing pod + persistent-disk `merged_df` rescue)
+- [~] Execute migration following the runbook
+  (Initiated 2026-06-22 by Carter, now co-owner. Billing pod `user-pod-cclinton-2d12`. Decided to
+  re-run fresh in 2.0 rather than rescue the stale persistent-disk `merged_df`. Transfer underway.)
 - [ ] Verify all artifacts present in 2.0; confirm nothing was lost
+  (Run the Validate check ~30 min post-start; capture RW 2.0 WORKSPACE_CDR / CDR_STORAGE_PATH.
+  Do NOT delete the legacy workspace until 2.0 is validated and the analysis re-runs cleanly.)
 
 ## Milestone 2: Codebook
 - [~] Define the 6 phenotypes in `codebook/phenotypes/` (OMOP concept sets + survey/EHR logic)
