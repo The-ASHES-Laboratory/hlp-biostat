@@ -1,0 +1,5 @@
+# Ignore everything in data/ except this gitignore and the README.
+# Participant-level survey and genotype data must NEVER be committed.
+*
+!.gitignore
+!README.md

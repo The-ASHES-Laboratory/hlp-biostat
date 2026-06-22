@@ -1,5 +1,10 @@
 # ---- Data: never commit participant-level or controlled-tier material ----
-data/
+# Ignore data/ CONTENTS, but keep the governance docs tracked (README + its .gitignore).
+# Using data/* (not data/) so the two negations below can take effect - git cannot
+# re-include a file when its parent directory itself is excluded.
+data/*
+!data/README.md
+!data/.gitignore
 # Data file types, wherever they appear in the tree
 *.csv
 *.tsv
