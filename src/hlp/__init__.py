@@ -25,6 +25,13 @@ from hlp.linkage import (
     attach_sex,
     normalize_sex,
 )
+from hlp.lifestyle import (
+    alcohol_level,
+    derive_lifestyle_features,
+    exercise_level,
+    sleep_level,
+    smoking_status,
+)
 from hlp.compare import (
     Prevalence,
     compare_groups,
@@ -46,6 +53,11 @@ __all__ = [
     "load_survey_rules",
     "attach_sex",
     "normalize_sex",
+    "alcohol_level",
+    "derive_lifestyle_features",
+    "exercise_level",
+    "sleep_level",
+    "smoking_status",
     "Prevalence",
     "compare_groups",
     "prevalence",

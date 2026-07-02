@@ -61,5 +61,9 @@ One-way, irreversible mirror. Do it carefully.
 - [~] Compare Hillsborough vs national AA risk/prevalence for the 6 conditions
   (Comparison engine implemented: `src/hlp/compare.py` - prevalence + Fisher's exact between two
   groups, AA-vs-EA or Hillsborough-vs-national. Awaits real labeled cohorts to run.)
-- [ ] Integrate lifestyle factors
+- [~] Integrate lifestyle factors
+  (`src/hlp/lifestyle.py`: derives smoking status (never/former/current from the multi-select),
+  alcohol/sleep ordinals, and gated exercise level from `lifestyle_variables.csv`. 9 unit tests.
+  Diet/environment items deferred. ChewingTobacco counted as current tobacco use - flag for review.
+  Feeds the risk models once the association module lands.)
 - [ ] Figures + manuscript draft
