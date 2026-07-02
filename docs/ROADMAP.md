@@ -47,7 +47,12 @@ One-way, irreversible mirror. Do it carefully.
 
 ## Milestone 4: Hillsborough cohort analysis (Hazel)
 - [ ] Genotype QC for the 62 participants
-- [ ] Phenotype the cohort from survey data using the same definitions
+- [~] Phenotype the cohort from survey data using the same definitions
+  (`src/hlp/survey_phenotypes.py` implemented: survey -> case/control with the same 1/0/None
+  contract as the AoU side, rules in `codebook/survey_rules.csv`. Direct (HTN, asthma),
+  cancer free-text parse (colorectal/prostate/breast), AF dropped as not-ascertainable.
+  15 unit tests. Awaits real survey data + sex from UUID linkage to run. Cancer keyword lists
+  in survey_rules.csv are seeded defaults pending Carter's review.)
 - [ ] Association / risk analysis
 
 ## Milestone 5: Cohort comparison

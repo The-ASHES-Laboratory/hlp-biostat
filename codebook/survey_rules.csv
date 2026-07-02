@@ -1,0 +1,7 @@
+phenotype,rule_type,survey_item,case_values,control_values,cancer_keywords,sex_restriction,notes
+hypertension,direct,diagnosed_highbloodpressure,Yes,No,,,Direct self-report (best-aligned of the six); Unsure/PNA -> missing
+asthma,direct,diagnosed_respiratoryissues,Yes,No,,,Over-broad (asthma OR other respiratory issues); Unsure/PNA -> missing
+atrial_fibrillation,not_ascertainable,,,,,,No AF-specific survey item; dropped from the Hillsborough side (see phenotypes/atrial_fibrillation.md)
+colorectal_cancer,cancer_freetext,diagnosed_cancer,Yes,No,colorectal|colon|rectal|rectum|bowel,,Gateway diagnosed_cancer + free-text cancer_specify parse. REVIEW keywords.
+prostate_cancer,cancer_freetext,diagnosed_cancer,Yes,No,prostate,male,Male-only (sex via UUID linkage to master sheet). REVIEW keywords.
+breast_cancer,cancer_freetext,diagnosed_cancer,Yes,No,breast,female,Female-only (sex via UUID linkage to master sheet). REVIEW keywords.
