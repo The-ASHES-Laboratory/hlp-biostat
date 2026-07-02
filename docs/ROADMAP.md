@@ -15,15 +15,15 @@ One-way, irreversible mirror. Do it carefully.
 - [x] Inventory legacy workspace (notebooks, buckets, datasets, config) before migrating
   (`docs/migration-inventory.md`; in-cloud read-only pass done. Notebook is self-contained;
   point-and-click objects do not block migration)
-- [~] Execute migration following the runbook
-  (2026-06-22: Carter's attempts failed - button reverts to "Retry" / hangs on "STARTING", never
-  surfaces in 2.0 after 30+ min. Diagnosed as owner-role propagation lag: Carter was promoted to
-  owner the same day, and the platform warns billing-pod/permission changes take 12-24h. Pivoting
-  to Jalen (original Creator, no lag) to initiate; or Carter retries after 12-24h. Decided to
-  re-run fresh in 2.0 rather than rescue the stale persistent-disk `merged_df`.)
-- [ ] Verify all artifacts present in 2.0; confirm nothing was lost
-  (Run the Validate check ~30 min post-start; capture RW 2.0 WORKSPACE_CDR / CDR_STORAGE_PATH.
-  Do NOT delete the legacy workspace until 2.0 is validated and the analysis re-runs cleanly.)
+- [x] Execute migration following the runbook
+  (2026-06-30: Jalen made Carter co-owner; the owner-role propagation lag cleared and the
+  migration to RW 2.0 completed successfully. Re-ran fresh in 2.0 rather than rescue the stale
+  persistent-disk `merged_df`. Earlier 2026-06-22 attempts had stalled on "STARTING" / reverted
+  to "Retry" due to same-day owner promotion, which is why Jalen initiated.)
+- [~] Verify all artifacts present in 2.0; confirm nothing was lost
+  (Validation in progress: run the Resources-tab file check ~30 min post-migration; capture RW 2.0
+  WORKSPACE_CDR / CDR_STORAGE_PATH + CDR version. Do NOT delete the legacy workspace until 2.0 is
+  validated and the analysis re-runs cleanly.)
 
 ## Milestone 2: Codebook
 - [~] Define the 6 phenotypes in `codebook/phenotypes/` (OMOP concept sets + survey/EHR logic)
