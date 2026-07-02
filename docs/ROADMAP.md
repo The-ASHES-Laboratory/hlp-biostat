@@ -47,6 +47,10 @@ One-way, irreversible mirror. Do it carefully.
 
 ## Milestone 4: Hillsborough cohort analysis (Hazel)
 - [ ] Genotype QC for the 62 participants
+- [~] Association / risk analysis
+  (`src/hlp/risk.py`: logistic risk models phenotype ~ lifestyle + demographics via statsmodels;
+  adjusted odds ratios + 95% CIs + p-values, complete-case, small-n separation surfaced. 7 unit
+  tests. Awaits labeled cohort. NOTE: n~62 will hit separation for rare phenotypes - watch it.)
 - [~] Phenotype the cohort from survey data using the same definitions
   (`src/hlp/survey_phenotypes.py` implemented: survey -> case/control with the same 1/0/None
   contract as the AoU side, rules in `codebook/survey_rules.csv`. Direct (HTN, asthma),

@@ -39,6 +39,11 @@ from hlp.compare import (
     prevalence_by_group,
     two_by_two,
 )
+from hlp.risk import (
+    RiskModel,
+    build_formula,
+    fit_risk_model,
+)
 
 __all__ = [
     "PhenotypeDef",
@@ -63,4 +68,7 @@ __all__ = [
     "prevalence",
     "prevalence_by_group",
     "two_by_two",
+    "RiskModel",
+    "build_formula",
+    "fit_risk_model",
 ]
