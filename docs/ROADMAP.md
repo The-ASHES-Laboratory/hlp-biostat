@@ -51,8 +51,10 @@ One-way, irreversible mirror. Do it carefully.
   (`src/hlp/survey_phenotypes.py` implemented: survey -> case/control with the same 1/0/None
   contract as the AoU side, rules in `codebook/survey_rules.csv`. Direct (HTN, asthma),
   cancer free-text parse (colorectal/prostate/breast), AF dropped as not-ascertainable.
-  15 unit tests. Awaits real survey data + sex from UUID linkage to run. Cancer keyword lists
-  in survey_rules.csv are seeded defaults pending Carter's review.)
+  Sex for prostate/breast resolved via `src/hlp/linkage.py` (attach_sex from the master-sheet
+  UUID linkage; unknown sex -> excluded). 20 unit tests. Awaits the real survey extract + master
+  sheet to run. Cancer keyword lists in survey_rules.csv are seeded defaults pending Carter's
+  review.)
 - [ ] Association / risk analysis
 
 ## Milestone 5: Cohort comparison

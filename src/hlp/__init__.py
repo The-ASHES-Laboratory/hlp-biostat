@@ -21,6 +21,10 @@ from hlp.survey_phenotypes import (
     classify_person_survey,
     load_survey_rules,
 )
+from hlp.linkage import (
+    attach_sex,
+    normalize_sex,
+)
 from hlp.compare import (
     Prevalence,
     compare_groups,
@@ -40,6 +44,8 @@ __all__ = [
     "build_survey_labels",
     "classify_person_survey",
     "load_survey_rules",
+    "attach_sex",
+    "normalize_sex",
     "Prevalence",
     "compare_groups",
     "prevalence",
