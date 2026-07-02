@@ -36,10 +36,19 @@ CLI installed and authenticated (`wb` 0.422.465, JAVA_HOME=/opt/homebrew/opt/ope
 
 These three pending values gate the notebook path fixes (runbook Step 4 / roadmap M1->M3).
 
-## Blocker: workspace pet service account not provisioned (root cause)
-The migrated workspace has **no pet/workspace service account** (`wb auth status` ->
-"Service account email for current workspace: (undefined)"). This single provisioning gap causes
-three cascading failures:
+## Blocker: Carter's pet service account not provisioned (per-user, NOT workspace-wide)
+**2026-07-02 update:** Jalen (owner `jfrank@`, the Creator who ran the migration) **can launch a
+Jupyter environment** and work inside the perimeter normally. So the workspace itself is fine; the
+gap is specific to **Carter's (`cclinton@`) identity** on the migrated workspace: his pet/workspace
+service account was never provisioned (`wb auth status` -> "Service account email for current
+workspace: (undefined)"), even though `wb workspace describe` shows him as Highest Role: OWNER.
+The migration wired up the Creator but not the co-owner.
+
+**Immediate unblock:** route the in-cloud extraction (concept-set queries, notebook pull, config
+capture) to Jalen, whose environment works. The Verily ticket is no longer the critical path; it is
+now just about getting Carter his own working environment.
+
+For Carter's identity, the missing pet SA causes three cascading failures (all resolved for Jalen):
 
 1. **Compute won't launch.** Creating a Jupyter app fails reproducibly with status Error:
    > Required 'compute.instances.getGuestAttributes' permission for
@@ -68,23 +77,26 @@ it. Once Verily provisions the pet SA and compute launches, run the concept quer
 in-env `gsutil`. CLI docs: https://support.workbench.verily.com/docs/guides/cli/cli_install_and_run/
 
 ## Verily support ticket (send this)
-> Subject: Migrated RW 2.0 workspace has no pet service account; compute + data access all fail
+> Subject: Co-owner has no pet service account on a migrated RW 2.0 workspace (owner works fine)
 >
 > Workspace namespace: `aou-rw-1fda26b2` ("Hillsborough Statistical Genetics Legacy Project"),
 > migrated ~2026-06-25, project `wb-halcyon-aubergine-9874`, CDR `C2024Q3R9` (v8).
 >
-> Root symptom: `wb auth status` reports "Service account email for current workspace: (undefined)"
-> - the workspace pet/service account was not provisioned during migration. Cascading failures:
+> The workspace Owner/Creator (`jfrank@researchallofus.org`) can launch a Jupyter environment and
+> work normally, so the workspace is provisioned correctly. The co-owner
+> (`cclinton@researchallofus.org`, shown as Highest Role: OWNER) cannot: his workspace pet/service
+> account was never provisioned (`wb auth status` -> "Service account email for current workspace:
+> (undefined)"). For cclinton@ this cascades to:
 > 1. Jupyter app launch fails: `Required 'compute.instances.getGuestAttributes' permission for
 >    'projects/wb-halcyon-aubergine-9874/zones/us-central1-a/instances/aoujupytercomputeengine20260630'`
 > 2. Controlled bucket: `wb gsutil ls gs://rw-migration-aou-rw-1fda26b2` -> 403 storage.objects.list
->    denied for cclinton@ (no pet SA to hold bucket IAM).
-> 3. CDR BigQuery: `wb bq query` on `wb-silky-artichoke-2408.C2024Q3R9` -> VPC Service Controls
->    request prohibited (expected from outside the perimeter; noted for completeness).
+>    denied for cclinton@.
+> (CDR BigQuery over the CLI is separately VPC-SC blocked from outside the perimeter; that is
+> expected and not part of this request.)
 >
-> Request: provision the workspace pet service account and grant it the required compute + bucket
-> IAM so analysis environments launch and in-perimeter data access works. Owner is cclinton@
-> (also confirm nothing else was lost in migration).
+> Request: provision the workspace pet service account for cclinton@ on this migrated workspace and
+> grant the required compute + bucket IAM, so his analysis environments launch. The migration
+> appears to have provisioned the Creator but not the co-owner.
 
 ## Notebook path-fix scope (#3) - ready to apply post-reconciliation
 Read-only grep of `aou/HLP_project.ipynb` (Jun-20 base):
