@@ -45,21 +45,23 @@ One-way, irreversible mirror. Do it carefully.
 - [ ] Pull genomic data (exome / microarray PLINK)
 - [ ] QC and association analysis for the 6 conditions
 
-## Milestone 4: Hillsborough cohort analysis (Hazel)
-- [ ] Genotype QC for the 62 participants
+## Milestone 4: Hillsborough cohort analysis (Hazel genotypes + local survey)
+- [ ] Genotype QC for the 62 participants (Hazel)
+- [x] Phenotype the cohort from survey data
+  (Working data is the compiled `data/HLP_Combo_summaries.xlsx` (n=48, IRB #27626, gitignored) -
+  a grad-student compilation of Qualtrics + paper surveys, coarser than the instrument codebook.
+  `src/hlp/hillsborough.py` adapts it to the canonical frame, reusing `survey_phenotypes` direct
+  rules + `linkage.normalize_sex`. 3 usable phenotypes: hypertension, asthma, **any_cancer**
+  (cancers collapsed - no subtype in the sheet, only 3 cases); AF dropped; sex/age/ethnicity
+  inline (no master-sheet linkage needed for this file). The generic classifiers
+  (`survey_phenotypes` instrument schema, `lifestyle.py`, `linkage.attach_sex`) remain for the raw
+  Qualtrics export / future use. 27 unit tests across the survey stack.)
 - [~] Association / risk analysis
-  (`src/hlp/risk.py`: logistic risk models phenotype ~ lifestyle + demographics via statsmodels;
-  adjusted odds ratios + 95% CIs + p-values, complete-case, small-n separation surfaced. 7 unit
-  tests. Awaits labeled cohort. NOTE: n~62 will hit separation for rare phenotypes - watch it.)
-- [~] Phenotype the cohort from survey data using the same definitions
-  (`src/hlp/survey_phenotypes.py` implemented: survey -> case/control with the same 1/0/None
-  contract as the AoU side, rules in `codebook/survey_rules.csv`. Direct (HTN, asthma),
-  cancer free-text parse (colorectal/prostate/breast), AF dropped as not-ascertainable.
-  Sex for prostate/breast resolved via `src/hlp/linkage.py` (attach_sex from the master-sheet
-  UUID linkage; unknown sex -> excluded). 20 unit tests. Awaits the real survey extract + master
-  sheet to run. Cancer keyword lists in survey_rules.csv are seeded defaults pending Carter's
-  review.)
-- [ ] Association / risk analysis
+  (`src/hlp/risk.py` (logistic, OR + 95% CI, complete-case, small-n separation surfaced) +
+  `analysis/hillsborough_summary.py`. Exploratory descriptive + logistic run completed on the local
+  n=48 sheet; results kept local per the data-governance rules (data/ gitignored, no real numbers
+  committed). Cohort is small/underpowered for most covariates. Genotype-based association awaits
+  Hazel QC.)
 
 ## Milestone 5: Cohort comparison
 - [~] Compare Hillsborough vs national AA risk/prevalence for the 6 conditions
