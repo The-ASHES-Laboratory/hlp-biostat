@@ -2,6 +2,27 @@
 
 *Created 2026-06-22. Do this in RW 2.0 after the migration completes.*
 
+## STATUS: DONE 2026-07-07 (off-platform)
+The AoU workspace CDR is unresolvable (superseded version; see `docs/migration-validation.md`), so
+rather than wait, the rebuild was done against the **public OHDSI vocabulary** (ATLAS demo WebAPI),
+which is the same OMOP vocabulary the CDR uses. Script: `analysis/rebuild_concept_sets.py`
+(resolves each root's standard Condition descendants, keeps valid STANDARD concepts, rewrites
+`codebook/condition_concepts.csv`). Reproducible; re-run any time.
+
+Result (standard Condition concepts): asthma 116, hypertension 148, atrial_fibrillation 19,
+colorectal_cancer 1896, prostate_cancer 178, breast_cancer 1907 (4,264 rows total). This removed the
+two non-standard concepts (4108832, 4157332) and the contamination - each set is now purely the
+descendants of its own root, so no cross-phenotype misfiling is possible.
+
+**Decision (2026-07-07): cancer sets kept BROAD / faithful.** The roots "Malignant tumor of <organ>"
+are site-based in SNOMED, so descendants include all malignancies at that organ (incl. rare
+lymphoma/sarcoma-of-site concepts), which is why the cancer sets are large. This matches what AoU's
+own "include descendants" builder produces; the rare post-coordinated concepts are ~never coded, so
+practical impact is negligible. Can be tightened to carcinoma-only later if desired.
+
+Rectum root resolved to concept 443390 ("Malignant tumor of rectum", SNOMED). ATLAS source key:
+ATLASPROD. --- original plan below, for reference ---
+
 ## Why
 The 2026-06-22 OHDSI Atlas audit found the notebook's original `CONDITION_CONCEPTS` was badly
 contaminated: 11 of ~25 IDs were wrong (mostly asthma concepts misfiled under the cancers and AF).

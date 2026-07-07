@@ -28,11 +28,12 @@ One-way, irreversible mirror. Do it carefully.
 ## Milestone 2: Codebook
 - [~] Define the 6 phenotypes in `codebook/phenotypes/` (OMOP concept sets + survey/EHR logic)
   (Case rule, sex restriction, and BOTH cohort halves now written. AoU notebook loads defs from
-  the codebook via hlp. **BLOCKER: AoU concept sets were badly contaminated** - audit removed 11
-  wrong IDs (mostly asthma misfiled under cancers/AF); cancer/AF/HTN sets are now thin and need a
-  proper REBUILD before Milestone 3 - plan at `docs/concept-set-rebuild-plan.md` (do it in the AoU
-  2.0 concept-set builder post-migration). Hillsborough: hypertension direct, asthma over-broad,
-  cancers need free-text parse, AF not ascertainable from the survey.)
+  the codebook via hlp. Concept sets were badly contaminated (audit removed 11 wrong IDs, mostly
+  asthma misfiled under cancers/AF), then **REBUILT 2026-07-07** off-platform from the public OHDSI
+  vocabulary (`analysis/rebuild_concept_sets.py`, since the AoU CDR is unresolvable): each phenotype
+  now carries its full standard Condition descendant set (4,264 concepts total; cancers kept broad/
+  site-based - see `docs/concept-set-rebuild-plan.md`). Hillsborough: hypertension direct, asthma
+  over-broad, cancers collapsed to any_cancer in the actual data, AF not ascertainable.)
 - [x] Map AoU survey variables and lifestyle variables to plain meanings
   (`survey_variables.csv` + `lifestyle_variables.csv` from the Hillsborough Health Survey codebook;
   metadata only, no PII. AoU side uses dynamic CDR queries, not a static variable list.)
