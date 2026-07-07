@@ -74,10 +74,16 @@ def fit_risk_model(
     categorical : predictors to dummy-encode (wrapped in C()); others enter as continuous.
     formula     : optional raw patsy formula overriding ``outcome``/``predictors``/``categorical``.
     """
+    import warnings
+
     import numpy as np
     import pandas as pd
     import statsmodels.formula.api as smf
-    from statsmodels.tools.sm_exceptions import PerfectSeparationError
+    from statsmodels.tools.sm_exceptions import (
+        ConvergenceWarning,
+        PerfectSeparationError,
+        PerfectSeparationWarning,
+    )
 
     predictors = list(predictors)
     cat = set(categorical)
@@ -101,7 +107,13 @@ def fit_risk_model(
     n_controls = int((y == 0).sum())
 
     try:
-        res = smf.logit(formula, data=data).fit(disp=0)
+        with warnings.catch_warnings():
+            # Non-convergence / quasi-separation at small n is surfaced structurally via the
+            # `converged` flag below, not as console noise. (A near-constant covariate at n~48 -
+            # e.g. a 93%-prevalent family history - will do this.)
+            warnings.simplefilter("ignore", ConvergenceWarning)
+            warnings.simplefilter("ignore", PerfectSeparationWarning)
+            res = smf.logit(formula, data=data).fit(disp=0)
     except PerfectSeparationError as exc:
         raise ValueError(
             f"perfect separation fitting '{outcome}' (n={n}, cases={n_cases}); "
@@ -110,15 +122,16 @@ def fit_risk_model(
     converged = bool(res.mle_retvals.get("converged", True))
 
     conf = res.conf_int()
-    terms = pd.DataFrame(
-        {
-            "term": list(res.params.index),
-            "odds_ratio": np.exp(res.params.to_numpy()),
-            "ci_low": np.exp(conf.iloc[:, 0].to_numpy()),
-            "ci_high": np.exp(conf.iloc[:, 1].to_numpy()),
-            "p_value": res.pvalues.to_numpy(),
-        }
-    )
+    with np.errstate(over="ignore"):  # a separated fit yields an inf OR - meaningful, not a warning
+        terms = pd.DataFrame(
+            {
+                "term": list(res.params.index),
+                "odds_ratio": np.exp(res.params.to_numpy()),
+                "ci_low": np.exp(conf.iloc[:, 0].to_numpy()),
+                "ci_high": np.exp(conf.iloc[:, 1].to_numpy()),
+                "p_value": res.pvalues.to_numpy(),
+            }
+        )
     return RiskModel(
         outcome=outcome,
         terms=terms,

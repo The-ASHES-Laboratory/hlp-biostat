@@ -119,6 +119,36 @@ def test_build_features_maps_the_sheet():
     assert get("u1", "age") == 60
 
 
+def test_build_features_family_history():
+    try:
+        import pandas as pd
+    except ImportError:
+        print("SKIP test_build_features_family_history (pandas not installed)")
+        return
+
+    from hlp.hillsborough import build_features
+
+    df = pd.DataFrame(
+        [
+            {"participant_id": "u1", "per_hyper": "Yes", "per_resp": "No", "per_cancer": "No",
+             "fam_hyper": "Yes", "fam_resp": "No", "fam_cancer": "Unsure", "Sex": "M", "Age": 60},
+            {"participant_id": "u2", "per_hyper": "No", "per_resp": "Yes", "per_cancer": "No",
+             "fam_hyper": "No", "fam_resp": "Yes", "fam_cancer": "Yes", "Sex": "F", "Age": 50},
+        ]
+    )
+    f = build_features(df)
+
+    def get(pid, col):
+        v = f.loc[pid, col]
+        return None if pd.isna(v) else v
+
+    assert get("u1", "family_hypertension") == 1
+    assert get("u2", "family_hypertension") == 0
+    assert get("u2", "family_asthma") == 1
+    assert get("u2", "family_cancer") == 1
+    assert get("u1", "family_cancer") is None  # "Unsure" -> missing
+
+
 if __name__ == "__main__":
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     failed = 0

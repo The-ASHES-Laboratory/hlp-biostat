@@ -119,6 +119,12 @@ def build_features(df, *, id_col: str = "participant_id"):
     feats["regular_exercise"] = pd.array([regular_exercise(v) for v in col("Exercise")], dtype="Int64")
     feats["adequate_sleep"] = pd.array([adequate_sleep(v) for v in col("Sleep")], dtype="Int64")
     feats["pollutant_exposure"] = pd.array([pollutant_exposure(v) for v in col("Pollutants")], dtype="Int64")
+    # Family history (fam_<x>) as Yes/No/None covariates, paralleling the three phenotypes.
+    yes, no = frozenset({"yes"}), frozenset({"no"})
+    feats["family_hypertension"] = pd.array([_binary(v, yes, no) for v in col("fam_hyper")], dtype="Int64")
+    feats["family_asthma"] = pd.array([_binary(v, yes, no) for v in col("fam_resp")], dtype="Int64")
+    feats["family_cancer"] = pd.array([_binary(v, yes, no) for v in col("fam_cancer")], dtype="Int64")
+
     feats["sex"] = [normalize_sex(v) for v in col("Sex")]
     feats["age"] = pd.to_numeric(col("Age"), errors="coerce").values
     feats["ethnicity"] = [(_norm(v).title() or None) for v in col("Ethnicity")]
