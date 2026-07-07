@@ -36,19 +36,24 @@ CLI installed and authenticated (`wb` 0.422.465, JAVA_HOME=/opt/homebrew/opt/ope
 
 These three pending values gate the notebook path fixes (runbook Step 4 / roadmap M1->M3).
 
-## Blocker: Carter's pet service account not provisioned (per-user, NOT workspace-wide)
-**2026-07-02 update:** Jalen (owner `jfrank@`, the Creator who ran the migration) **can launch a
-Jupyter environment** and work inside the perimeter normally. So the workspace itself is fine; the
-gap is specific to **Carter's (`cclinton@`) identity** on the migrated workspace: his pet/workspace
-service account was never provisioned (`wb auth status` -> "Service account email for current
-workspace: (undefined)"), even though `wb workspace describe` shows him as Highest Role: OWNER.
-The migration wired up the Creator but not the co-owner.
+## Blocker: analysis compute will not provision (affects BOTH owner and co-owner)
+**2026-07-07 update (supersedes the 2026-07-02 theory below):** Jalen (owner `jfrank@`) **also
+cannot complete** the in-cloud steps - launching an analysis environment fails for him too, not just
+for Carter. That rules out a per-user / co-owner pet-SA cause. The concrete failure now visible in
+the **Create App -> Compute options** dialog is:
+> "No options available for the selected zone. Please choose a different zone." (zone `us-central1-a`)
 
-**Immediate unblock:** route the in-cloud extraction (concept-set queries, notebook pull, config
-capture) to Jalen, whose environment works. The Verily ticket is no longer the critical path; it is
-now just about getting Carter his own working environment.
+and any instance forced through lands in **Error** (e.g. `Jupyter_ComputeEngine_20260703`). The
+earlier `getGuestAttributes` error is the downstream symptom of an instance that cannot provision in
+that zone. **First thing to try (self-service):** pick a different zone (`us-central1-b/c/f`) in the
+Compute options step; the UI itself suggests this mitigates temporary resource unavailability. If no
+zone works, it is a workspace/project provisioning issue for Verily.
 
-For Carter's identity, the missing pet SA causes three cascading failures (all resolved for Jalen):
+**Superseded 2026-07-02 theory (kept for history):** initially looked co-owner-specific - Carter's
+`wb auth status` showed "Service account email for current workspace: (undefined)". But Jalen (owner)
+failing the same way rules that out as the root cause.
+
+Failures observed (Carter, via CLI + UI):
 
 1. **Compute won't launch.** Creating a Jupyter app fails reproducibly with status Error:
    > Required 'compute.instances.getGuestAttributes' permission for
@@ -59,8 +64,8 @@ For Carter's identity, the missing pet SA causes three cascading failures (all r
 3. **CDR BigQuery blocked.** `wb bq query` against `wb-silky-artichoke-2408.C2024Q3R9` ->
    `VPC Service Controls: Request is prohibited by organization's policy`.
 
-**Action: Verily support ticket** (see ticket text below / in chat). Project
-`wb-halcyon-aubergine-9874`, namespace `aou-rw-1fda26b2`, missing pet service account.
+**Action:** try a different zone first (above). If that fails, send the Verily ticket below.
+Project `wb-halcyon-aubergine-9874`, namespace `aou-rw-1fda26b2`.
 
 ## Why the CLI cannot substitute for the data plane
 The CLI works for the **control plane** (auth, `workspace describe`, `resource list/resolve`) - that
@@ -72,31 +77,32 @@ is how the config values above were captured. But the **data plane** is sealed:
 
 Therefore the notebook pull (#3/#4) and the concept-set queries (#2) both REQUIRE the in-perimeter
 analysis environment. They are blocked by the same provisioning gap as compute, not independent of
-it. Once Verily provisions the pet SA and compute launches, run the concept queries IN A NOTEBOOK
+it. Once compute launches (a working zone or a Verily fix), run the concept queries IN A NOTEBOOK
 (Python BigQuery client, as originally planned) and pull the notebook via the Resources tab /
 in-env `gsutil`. CLI docs: https://support.workbench.verily.com/docs/guides/cli/cli_install_and_run/
 
-## Verily support ticket (send this)
-> Subject: Co-owner has no pet service account on a migrated RW 2.0 workspace (owner works fine)
+## Verily support ticket (send this, only if changing zones does not work)
+> Subject: Cannot launch any analysis environment on a migrated RW 2.0 workspace (owner + co-owner)
 >
 > Workspace namespace: `aou-rw-1fda26b2` ("Hillsborough Statistical Genetics Legacy Project"),
-> migrated ~2026-06-25, project `wb-halcyon-aubergine-9874`, CDR `C2024Q3R9` (v8).
+> migrated ~2026-06-25, project `wb-halcyon-aubergine-9874`, CDR `C2024Q3R9` (v8), default location
+> `us-central1`. The workspace is in a VPC-SC perimeter.
 >
-> The workspace Owner/Creator (`jfrank@researchallofus.org`) can launch a Jupyter environment and
-> work normally, so the workspace is provisioned correctly. The co-owner
-> (`cclinton@researchallofus.org`, shown as Highest Role: OWNER) cannot: his workspace pet/service
-> account was never provisioned (`wb auth status` -> "Service account email for current workspace:
-> (undefined)"). For cclinton@ this cascades to:
-> 1. Jupyter app launch fails: `Required 'compute.instances.getGuestAttributes' permission for
->    'projects/wb-halcyon-aubergine-9874/zones/us-central1-a/instances/aoujupytercomputeengine20260630'`
-> 2. Controlled bucket: `wb gsutil ls gs://rw-migration-aou-rw-1fda26b2` -> 403 storage.objects.list
->    denied for cclinton@.
-> (CDR BigQuery over the CLI is separately VPC-SC blocked from outside the perimeter; that is
-> expected and not part of this request.)
+> Neither the Owner/Creator (`jfrank@researchallofus.org`) nor the co-owner
+> (`cclinton@researchallofus.org`, also Highest Role: OWNER) can create an analysis environment.
+> Symptoms:
+> 1. In Create App -> Compute options, the machine-type list is empty with:
+>    "No options available for the selected zone. Please choose a different zone." (zone us-central1-a).
+>    We tried other us-central1 zones with the same result. [Confirm which zones you tried.]
+> 2. Any instance that does get created lands in Error, e.g. `Jupyter_ComputeEngine_20260703`, and
+>    an earlier one failed with: `Required 'compute.instances.getGuestAttributes' permission for
+>    'projects/wb-halcyon-aubergine-9874/zones/us-central1-a/instances/aoujupytercomputeengine20260630'`.
 >
-> Request: provision the workspace pet service account for cclinton@ on this migrated workspace and
-> grant the required compute + bucket IAM, so his analysis environments launch. The migration
-> appears to have provisioned the Creator but not the co-owner.
+> This is not a per-user permission issue (both owner and co-owner reproduce it). It looks like the
+> migrated workspace's project cannot provision Compute Engine VMs (no available machine types in
+> the zone / missing compute setup or IAM on the runtime service account). Request: fix the
+> workspace's compute provisioning so analysis environments launch. Also confirm nothing else was
+> lost in migration. [If you have a preferred zone/region, let us know.]
 
 ## Notebook path-fix scope (#3) - ready to apply post-reconciliation
 Read-only grep of `aou/HLP_project.ipynb` (Jun-20 base):
