@@ -64,7 +64,8 @@ Failures observed (Carter, via CLI + UI):
 3. **CDR BigQuery blocked.** `wb bq query` against `wb-silky-artichoke-2408.C2024Q3R9` ->
    `VPC Service Controls: Request is prohibited by organization's policy`.
 
-**Action:** try a different zone first (above). If that fails, send the Verily ticket below.
+**Action:** see the 2026-07-07 (later) finding below - the root cause turned out to be a
+non-resolvable (superseded) CDR version, not the zone. Send the CDR ticket below.
 Project `wb-halcyon-aubergine-9874`, namespace `aou-rw-1fda26b2`.
 
 ## Why the CLI cannot substitute for the data plane
@@ -81,28 +82,44 @@ it. Once compute launches (a working zone or a Verily fix), run the concept quer
 (Python BigQuery client, as originally planned) and pull the notebook via the Resources tab /
 in-env `gsutil`. CLI docs: https://support.workbench.verily.com/docs/guides/cli/cli_install_and_run/
 
-## Verily support ticket (send this, only if changing zones does not work)
-> Subject: Cannot launch any analysis environment on a migrated RW 2.0 workspace (owner + co-owner)
+## 2026-07-07 (later): the real root cause - CDR version not resolvable
+Restarting the existing stopped instance DID reach Running (so raw compute can run). But the
+environment cannot resolve the workspace's CDR: sourcing the platform's `load-env.sh` fails with
+> `Failed to get CDR configuration: CDR version not found: cdrv8 - R9 (env: prod, access tier: controlled)`
+
+and `env | grep WORKSPACE` prints nothing (no `WORKSPACE_CDR` / `WORKSPACE_BUCKET` / etc. get set).
+The workspace also shows a banner about a newly published Controlled Tier version. Read together:
+**the workspace is pinned to CDR `C2024Q3R9` (cdrv8-R9), which AoU appears to have superseded, so
+the platform can no longer resolve it.** This is the actual blocker (upstream of the compute/zone
+symptoms), and it is a known AoU pattern - a workspace on a deprecated CDR must be re-pointed to the
+current CDR version or duplicated onto it (workspace CDR/data-collection settings, or AoU support).
+
+Do NOT hardcode the stale dataset path to force queries: the platform is actively declining to
+resolve this controlled-tier CDR, and the real analysis needs a working CDR regardless. Independent
+of the CDR, the notebook code can still be pulled from the bucket via in-env `gsutil` (it does not
+depend on CDR resolution). And the concept-set rebuild (#2) can be done off-platform from the
+**public OMOP/OHDSI vocabulary** (Atlas/Athena) instead of the AoU CDR - same standard descendants.
+
+## Verily / AoU support ticket (send this)
+> Subject: Workspace CDR version cannot be resolved after migration (cdrv8-R9 / C2024Q3R9)
 >
 > Workspace namespace: `aou-rw-1fda26b2` ("Hillsborough Statistical Genetics Legacy Project"),
-> migrated ~2026-06-25, project `wb-halcyon-aubergine-9874`, CDR `C2024Q3R9` (v8), default location
-> `us-central1`. The workspace is in a VPC-SC perimeter.
+> migrated ~2026-06-25, project `wb-halcyon-aubergine-9874`, in a VPC-SC perimeter. Owner
+> `jfrank@researchallofus.org`, co-owner `cclinton@researchallofus.org`.
 >
-> Neither the Owner/Creator (`jfrank@researchallofus.org`) nor the co-owner
-> (`cclinton@researchallofus.org`, also Highest Role: OWNER) can create an analysis environment.
-> Symptoms:
-> 1. In Create App -> Compute options, the machine-type list is empty with:
->    "No options available for the selected zone. Please choose a different zone." (zone us-central1-a).
->    We tried other us-central1 zones with the same result. [Confirm which zones you tried.]
-> 2. Any instance that does get created lands in Error, e.g. `Jupyter_ComputeEngine_20260703`, and
->    an earlier one failed with: `Required 'compute.instances.getGuestAttributes' permission for
->    'projects/wb-halcyon-aubergine-9874/zones/us-central1-a/instances/aoujupytercomputeengine20260630'`.
+> A Jupyter environment now runs, but the workspace's CDR cannot be resolved. The platform's
+> `load-env.sh` fails at startup and on re-source with:
+>   "Failed to get CDR configuration: CDR version not found: cdrv8 - R9 (env: prod, access tier:
+>    controlled)"
+> and no WORKSPACE_* environment variables are set. The workspace shows a banner about a newly
+> published Controlled Tier version. It looks like the workspace is pinned to CDR C2024Q3R9
+> (cdrv8-R9), which has been superseded, so it no longer resolves. This reproduces for both owner
+> and co-owner.
 >
-> This is not a per-user permission issue (both owner and co-owner reproduce it). It looks like the
-> migrated workspace's project cannot provision Compute Engine VMs (no available machine types in
-> the zone / missing compute setup or IAM on the runtime service account). Request: fix the
-> workspace's compute provisioning so analysis environments launch. Also confirm nothing else was
-> lost in migration. [If you have a preferred zone/region, let us know.]
+> Request: re-point this workspace to the current Controlled Tier CDR version (or advise how to
+> duplicate/upgrade it onto the current CDR), so environments configure and the CDR is queryable.
+> Please also confirm the correct current CDR version string. [Note the banner's stated new version
+> here if visible.]
 
 ## Notebook path-fix scope (#3) - ready to apply post-reconciliation
 Read-only grep of `aou/HLP_project.ipynb` (Jun-20 base):
