@@ -116,10 +116,17 @@ depend on CDR resolution). And the concept-set rebuild (#2) can be done off-plat
 > (cdrv8-R9), which has been superseded, so it no longer resolves. This reproduces for both owner
 > and co-owner.
 >
-> Request: re-point this workspace to the current Controlled Tier CDR version (or advise how to
-> duplicate/upgrade it onto the current CDR), so environments configure and the CDR is queryable.
-> Please also confirm the correct current CDR version string. [Note the banner's stated new version
-> here if visible.]
+> The data catalog shows the current published/default Controlled Tier version is **cdrv9**, dataset
+> **C2025Q4R6** (project wb-silky-artichoke-2408, us-central1); our workspace is bound to the retired
+> cdrv8 / R9 (C2024Q3R9), which no longer resolves.
+>
+> Request: re-point this workspace from cdrv8/C2024Q3R9 to the current **cdrv9 / C2025Q4R6** (or
+> advise how to duplicate/upgrade it onto cdrv9), so environments configure and the CDR is queryable.
+
+**Note:** re-pointing to cdrv9 (C2025Q4R6) means the national-cohort analysis will run on a NEWER CDR
+than the codebook was built against - re-verify concept sets and any hardcoded CDR/genomic paths on
+the new version. The concept sets are already rebuilt from the standard OMOP vocabulary (stable
+across CDR versions), so they should carry over.
 
 ## Notebook path-fix scope (#3) - ready to apply post-reconciliation
 Read-only grep of `aou/HLP_project.ipynb` (Jun-20 base):
