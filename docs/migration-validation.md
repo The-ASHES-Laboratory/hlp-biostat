@@ -100,7 +100,25 @@ of the CDR, the notebook code can still be pulled from the bucket via in-env `gs
 depend on CDR resolution). And the concept-set rebuild (#2) can be done off-platform from the
 **public OMOP/OHDSI vocabulary** (Atlas/Athena) instead of the AoU CDR - same standard descendants.
 
-## Verily / AoU support ticket (send this)
+## Self-service fix (DO THIS FIRST): duplicate the workspace onto cdrv9
+AoU does not re-point a workspace's CDR in place - the standard way off a deprecated CDR is to
+**duplicate the workspace and select the current CDR version**, which the owner can do without a
+ticket (support would just tell you the same). Clean for us because our cohorts/concept sets are
+code-based (nothing lost when GUI objects don't carry), and we already pulled the notebook + rebuilt
+the concept sets, so the old workspace holds nothing we still need.
+
+Steps (owner, in RW 2.0):
+1. Workspaces -> "Hillsborough Statistical Genetics Legacy Project" -> **Duplicate**.
+2. In the dialog, **select CDR version `cdrv9` (C2025Q4R6)** and a valid billing pod. Create.
+3. In the new workspace, start a Jupyter env; confirm `load-env` now sets `WORKSPACE_CDR` (no
+   "CDR version not found"). That means the CDR resolves and M3 can run.
+
+Equivalent alternative: create a brand-new workspace on cdrv9 and upload our reconciled
+`aou/HLP_project.ipynb` - our assets are all local, so this loses nothing either.
+After the new workspace is on cdrv9: apply `docs/notebook-reconciliation.md` decisions + update all
+`v8`/`C2024Q3R9`/`fc-aou-datasets-controlled/v8` paths -> cdrv9 / C2025Q4R6, then run M3.
+
+## Verily / AoU support ticket (FALLBACK - only if Duplicate won't offer cdrv9)
 > Subject: Workspace CDR version cannot be resolved after migration (cdrv8-R9 / C2024Q3R9)
 >
 > Workspace namespace: `aou-rw-1fda26b2` ("Hillsborough Statistical Genetics Legacy Project"),
