@@ -113,6 +113,18 @@ Steps (owner, in RW 2.0):
 3. In the new workspace, start a Jupyter env; confirm `load-env` now sets `WORKSPACE_CDR` (no
    "CDR version not found"). That means the CDR resolves and M3 can run.
 
+### Duplication IN PROGRESS (2026-07-15)
+Duplicating onto cdrv9. At the resource-selection step, cdrv9 exposes 6 resources; **select these 3**
+(the project needs the main CDR + genomic storage, which in v9 must be explicit workspace resources):
+- `C2025Q4R6` (main CDR BigQuery dataset - fixes WORKSPACE_CDR, cohort/phenotypes/cb_search_person)
+- `vwb-aou-datasets-controlled-v9` (v9 controlled-datasets storage = old fc-aou-datasets-controlled/v8;
+  holds the microarray/exome PLINK we pull)
+- `v9-genomics-folder` (genomics folder, for genomic data access)
+
+Skip `prep_C2025Q4R6`, `C_V9_R3_aou_biospecimen`, `C_V9_R6_offcycle_nlp` (unused). RUS answers for the
+new workspace: `docs/aou-research-use-statement.md`. After create: verify WORKSPACE_CDR populates,
+then capture the new namespace/project/CDR + genomic paths for the notebook update.
+
 Equivalent alternative: create a brand-new workspace on cdrv9 and upload our reconciled
 `aou/HLP_project.ipynb` - our assets are all local, so this loses nothing either.
 After the new workspace is on cdrv9: apply `docs/notebook-reconciliation.md` decisions + update all
