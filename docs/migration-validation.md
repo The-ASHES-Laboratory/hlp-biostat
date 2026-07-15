@@ -130,6 +130,32 @@ Equivalent alternative: create a brand-new workspace on cdrv9 and upload our rec
 After the new workspace is on cdrv9: apply `docs/notebook-reconciliation.md` decisions + update all
 `v8`/`C2024Q3R9`/`fc-aou-datasets-controlled/v8` paths -> cdrv9 / C2025Q4R6, then run M3.
 
+### 2026-07-15 (later): BOTH duplicate and fresh-create fail - Cloud BILLING QUOTA exceeded
+The cdrv9 duplicate never opened ("Unable to access workspace"), and a from-scratch workspace create
+failed identically. The fresh-create surfaced the actual backend error:
+> Error creating workspace: Error updating billing account (HTTP 400): FAILED_PRECONDITION:
+> Precondition check failed. Quota failure details: Cloud billing quota exceeded.
+> (Request ID: `d6850d77-00a7-4ebe-afdc-2b8e12d7d0c1`)
+
+**Root cause (supersedes the "provisioning glitch" read):** the GCP billing account behind pod
+`user-pod-cclinton-2d12` has hit its **projects-per-billing-account quota**. Every AoU workspace = one
+GCP project; cclinton's pod already carries ~10 workspaces, so no new project can provision - which is
+why BOTH the duplicate and the fresh shell got created-but-unopenable. Not fixable in-browser.
+
+Also note: the fresh "New workspace" flow in this Verily build is a bare shell (name / pod / policy /
+region / description) - it has NO CDR selector, NO RUS, NO resource picker. Those live only in the
+**Duplicate** flow or (untested, blocked by quota) via attaching a data collection post-create. So once
+quota is restored, **Duplicate is the known-good path** to get cdrv9 + RUS + the 3 resources in one go.
+
+Fixes (fastest -> slowest):
+1. **Free quota:** delete unused workspaces on cclinton's pod to free project slots, then retry Duplicate.
+   NEVER delete the jfrank-owned original `aou-rw-1fda26b2` (only intact copy of the migrated notebook).
+2. **Use a pod with headroom:** provision the new cdrv9 workspace under jfrank's pod or another billing pod.
+3. **Request a billing quota increase** (Google quota form / Verily support) with the Request ID above.
+
+Two stuck, inaccessible entries now exist (the failed duplicate + the failed shell); they did not persist
+as openable workspaces (count stayed 10). Leave for support to clear alongside the quota fix.
+
 ## Verily / AoU support ticket (FALLBACK - only if Duplicate won't offer cdrv9)
 > Subject: Workspace CDR version cannot be resolved after migration (cdrv8-R9 / C2024Q3R9)
 >
